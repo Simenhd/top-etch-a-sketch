@@ -1,17 +1,29 @@
 
+let gridLinesToggled = true;
+let mouseDown = false;
+let selectedColor = "primary";
+let showGridLines = true;
+
 const gameBoard = document.querySelector('.board-container');
 const gridSizeSlider = document.querySelector('.slidecontainer .slider');
-const gridSizeDisplay = document.querySelector('.settings-container h4')
+const gridSizeDisplay = document.querySelector('.bottom-settings-container h4');
+// settings buttons
+const clearButton = document.querySelector('button#clear');
+const colorOptionButtons = document.querySelectorAll('.color-options button');
+const gridLinesButton = document.querySelector('button#gridlines');
 
 function gridGenerator(size) {    
     for (let i = 0; i < size; i++) {
         let column = document.createElement("div");
         column.className = "column";
         for (let j = 1; j <size; j++) {
+            let rowWrapper = document.createElement("div");
             let row = document.createElement("div"); 
+            rowWrapper.className = "row-wrapper";
             row.className = "row";
             row.id = (i*size) + j
-            column.appendChild(row)
+            rowWrapper.appendChild(row);
+            column.appendChild(rowWrapper); 
         };
         gameBoard.appendChild(column);
     };
@@ -21,6 +33,7 @@ function gridGenerator(size) {
 function resetGrid() {
     gridTiles.forEach(div => {
         div.style.backgroundColor = "";
+        div.style.opacity = 1
     })
 };
 
@@ -31,33 +44,119 @@ function deleteGrid() {
     };
 };
 
+
+
 // Generate grid 
 gridGenerator(16);
 
 // Select all tiles
-const gridTiles = document.querySelectorAll('.row');
+let gridTiles = document.querySelectorAll('.row');
+let gridTileWrappers = document.querySelectorAll('.row-wrapper');
 
-// Format when mouse over a tile
-gridTiles.forEach(div => {
-    div.addEventListener('mouseover', (e) => {
-        console.log("Hover detected");
-        currentButton = e.currentTarget;
-        currentButton.style.backgroundColor = "#ff0000"
+
+
+// Function to attach event listeners to grid tiles
+function attachEventListeners() {
+    gridTiles.forEach(div => {
+        div.addEventListener('mousedown', () => {
+            mouseDown = true;
+        });
+        div.addEventListener('mouseup', () => {
+            mouseDown = false;
+        });
+        div.addEventListener('mouseover', (e) => {
+            if (mouseDown) {
+                console.log("Hover detected");
+                
+                switch (selectedColor) {
+                    case "primary":
+                        e.currentTarget.style.backgroundColor = "#90CAF9";
+                        e.currentTarget.style.opacity = 1;
+                        break;
+                    case "rainbow":
+                        e.currentTarget.style.backgroundColor = random_rgba();
+                        e.currentTarget.style.opacity = 1;
+                        break;
+                    case "darken": {
+                        let currentColor = e.currentTarget.style.backgroundColor;
+                        let currentOpacity = parseFloat(e.currentTarget.style.opacity) || 0;
+                        e.currentTarget.style.opacity = currentOpacity + 0.1;
+                        console.log(currentColor);  
+                        if (currentColor === "") {
+                            e.currentTarget.style.backgroundColor = "#90CAF9"
+                        }
+                        break;
+                    }
+                    case "lighten": {
+                        let currentOpacity = parseFloat(e.currentTarget.style.opacity) || 0;
+                        e.currentTarget.style.opacity = currentOpacity - 0.1;
+                        break;
+                    }
+                }
+            }
+        });
     });
-});
+};
 
-gridSizeSlider.addEventListener('change', (e) => {
+
+
+colorOptionButtons.forEach(button => {
+    button.addEventListener('click', (e) => {
+        colorOptionButtons.forEach(b => {b.style.border = ""});
+        selectedColor = e.target.id;
+        e.currentTarget.style.border = "2px solid black"
+
+    })
+})
+
+function random_rgba() {
+    var o = Math.round, r = Math.random, s = 230; // Max RGB value set to 230 to prevent white
+    var red = o(r() * s);
+    var green = o(r() * s);
+    var blue = o(r() * s);
+    
+    return `rgba(${red},${green},${blue},${(0.5 + r() * 0.5).toFixed(1)})`; // 0.5 < alpha < 1 
+}
+
+
+// Attach event listeners to initial grid
+attachEventListeners();
+
+gridSizeSlider.addEventListener('input', (e) => {
     // Remove existing tiles
     deleteGrid();
 
     // Add new tiles
     gridGenerator(e.target.value);
 
+    // select new tiles
+    gridTiles = document.querySelectorAll('.row');
+    gridTileWrappers = document.querySelectorAll('.row-wrapper');
+
+    // Attach event handlers to new grids
+    attachEventListeners();
+
     // Update grid size display
     gridSizeDisplay.textContent = `${e.target.value} x ${e.target.value}`
 
 });
 
+// Evnent listener for clear button
+clearButton.addEventListener('click', (e) => {
+    resetGrid();
+});
+
+// Event listener for gridline toggle
+gridLinesButton.addEventListener('click', (e) => {
+    if (showGridLines) {
+        gridTileWrappers.forEach((div => div.style.border = "0px"));
+        showGridLines = false;
+    } else {
+        gridTileWrappers.forEach((div => div.style.border = "1px solid black"));
+        showGridLines = true;
+    }
+    
+});
 
 
 

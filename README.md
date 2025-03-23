@@ -8,7 +8,7 @@
 
 ## Project Structure
 ```bash
-top-etch-a-sktech/
+top-rockPaperScissors/
 ├── README.md
 ├── index.html
 └── script.js

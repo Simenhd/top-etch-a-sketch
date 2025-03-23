@@ -1,28 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Etch-a-sketch</title>
-
-    <!-- JavaScript -->
-    <script defer src="script.js"></script>
-
-    <!-- Stylesheet -->
-    <link rel="stylesheet" href="styles.css">
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Etch-a-Sketch</title>
+  <!-- JavaScript -->
+  <script defer src="script.js"></script>
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="screen-container">
-        
-        <div class="settings-container">
-            <div class="slidecontainer">
-                <input type="range" min="16" max="100" value="16" class="slider" id="gridSize">
-            </div>
-            <h4>16 x 16</h4>
+  <div class="screen-container">
+    <!-- Title spans the full width -->
+    <h1 class="game-title">Etch-a-Sketch</h1>
+    <!-- Centered wrapper for the board and related controls -->
+    <div class="board-wrapper">
+      <div class="board-container">
+        <!-- Your board content goes here -->
+      </div>
+      <div class="bottom-settings-container">
+        <div class="slidecontainer">
+          <input type="range" min="16" max="100" value="16" class="slider" id="gridSize">
         </div>
-        
-        <div class="board-container"></div>
+        <h4>16 x 16</h4>
+      </div>
+      <!-- Settings pane positioned to the right of the board -->
+      <div class="settings-pane">
+        <h4>Color options</h4>
+        <div class="color-options">
+            <button class="primary-button" id="primary">Primary</button>
+            <button class="primary-button" id="rainbow">Rainbow</button>
+            <button class="primary-button" id="darken">Darken</button>
+            <button class="primary-button" id="lighten">Lighten</button>
+        </div>
+        <h4>Gridlines</h4>
+        <div class="gridlines-options">
+            <button class="primary-button" id="gridlines">Enable</button>
+        </div>
+        <button class="danger-button" id="clear">Clear grid</button>
+      </div>
     </div>
+  </div>
 </body>
 </html>

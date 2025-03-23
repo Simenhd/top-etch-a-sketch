@@ -1,7 +1,11 @@
 :root {
     --primaryColor: #90CAF9;
-    --textColor: rgba(255,255,255,.87) ;
+    --primaryDarkColor: color-mix(in srgb, var(--primaryColor) 90%, black 10%);
+    --primaryTextColor: #212529;
+    --textColor: rgba(255,255,255,.87);
     --surfaceColor: #17212f;
+    --surfaceColorSecondary: #1f2d40;
+    
 }
 
 * {
@@ -20,12 +24,17 @@ body {
 
 .screen-container {
     display: flex;
-    flex-direction: column-reverse;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     height: 100%;
     width: 100%;
 }
+
+.board-wrapper {
+    position: relative;
+    display: inline-block;
+  }
 
 .board-container {
     display: flex;
@@ -33,13 +42,18 @@ body {
     justify-content: space-around;
     width: 600px;
     height: 600px;
-    background-color: #bfbfbf;
+    border-radius: 10px;
+    background-color: var(--surfaceColorSecondary);
+}
+
+.row {
+    height: 100%;
 }
 
 .board-container>div {
     height: 100%    ; 
     flex: 1 0 auto;
-
+    background-color: white;
     display: flex;
     flex-direction: column;
 
@@ -48,11 +62,17 @@ body {
 .board-container>div>* {
     /* make rows evenly distributed */
     flex: 1;
+    background-color: white;
     border: 1px solid black;
   }
 
-  /*  Settings */
-.settings-container {
+.game-title {
+    margin-bottom: 10px;
+}
+
+
+  /* Bottom settings */
+.bottom-settings-container {
     display: flex;
     flex-direction: column;
     justify-content: start;
@@ -64,40 +84,106 @@ body {
 
 /* Slicer */
 .slidecontainer {
-    width: 100%; /* Width of the outside container */
+    width: 100%; 
   }
   
   /* The slider itself */
   .slider {
-    -webkit-appearance: none;  /* Override default CSS styles */
+    -webkit-appearance: none; 
     appearance: none;
-    width: 100%; /* Full-width */
-    height: 25px; /* Specified height */
-    background: #d3d3d3; /* Grey background */
-    outline: none; /* Remove outline */
-    opacity: 0.7; /* Set transparency (for mouse-over effects on hover) */
-    -webkit-transition: .2s; /* 0.2 seconds transition on hover */
+    width: 100%; 
+    height: 25px; 
+    background: #d3d3d3;
+    outline: none; 
+    opacity: 0.7; 
+    -webkit-transition: .2s; 
     transition: opacity .2s;
   }
   
-  /* Mouse-over effects */
+
   .slider:hover {
-    opacity: 1; /* Fully shown on mouse-over */
+    opacity: 1; 
   }
   
-  /* The slider handle (use -webkit- (Chrome, Opera, Safari, Edge) and -moz- (Firefox) to override default look) */
+
   .slider::-webkit-slider-thumb {
-    -webkit-appearance: none; /* Override default look */
+    -webkit-appearance: none; 
     appearance: none;
-    width: 25px; /* Set a specific slider handle width */
-    height: 25px; /* Slider handle height */
-    background: var(--primaryColor); /* Green background */
-    cursor: pointer; /* Cursor on hover */
+    width: 25px; 
+    height: 25px; 
+    background: var(--primaryColor); 
+    cursor: pointer; 
   }
   
   .slider::-moz-range-thumb {
-    width: 25px; /* Set a specific slider handle width */
-    height: 25px; /* Slider handle height */
-    background: var(--primaryColor); /* Green background */
-    cursor: pointer; /* Cursor on hover */
+    width: 25px;
+    height: 25px; 
+    background: var(--primaryColor); 
+    cursor: pointer; 
   }
+
+  /* Settings pane positioned absolutely relative to the board-wrapper */
+.settings-pane {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+    position: absolute;
+    top: 1px;
+    left: 100%;       
+    width: 140px;     
+    height: 578px;    
+    background: grey;
+    margin-left: 10px;
+    padding: 10px;
+    border-radius: 4px;
+
+  }
+
+.settings-pane>button {
+    background-color: var(--primaryColor);
+    border: 1px solid var(--primaryColor);
+    border-radius: 4px;
+}
+
+.color-options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+#clear {
+    margin-top: auto;
+}
+
+button {
+    width: 120px;
+    font-size: 14px;
+    padding: 7px 14px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button.danger-button {
+    background-color: #f44336;
+    border: 1px solid #f44336;
+}
+
+button.danger-button:hover {
+    background-color: #e53935;
+}
+
+button.primary-button {
+    background-color: var(--primaryColor);
+    border: 1px solid var(--primaryColor);
+    color: var(--primaryTextColor);
+    
+}
+
+button.primary-button:hover {
+    background-color: var(--primaryDarkColor);
+    border: 1px solid var(--primaryDarkColor);
+}
+
+
+  
