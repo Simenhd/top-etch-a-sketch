@@ -1,8 +1,8 @@
-
 let gridLinesToggled = true;
 let mouseDown = false;
 let selectedColor = "primary";
 let showGridLines = true;
+
 
 const gameBoard = document.querySelector('.board-container');
 const gridSizeSlider = document.querySelector('.slidecontainer .slider');
@@ -20,6 +20,12 @@ function gridGenerator(size) {
             let rowWrapper = document.createElement("div");
             let row = document.createElement("div"); 
             rowWrapper.className = "row-wrapper";
+
+            // ← apply the border state here:
+            rowWrapper.style.border = showGridLines
+            ? "1px solid black"
+            : "0";
+
             row.className = "row";
             row.id = (i*size) + j
             rowWrapper.appendChild(row);
@@ -46,7 +52,7 @@ function deleteGrid() {
 
 
 
-// Generate grid 
+// Generate grid of
 gridGenerator(16);
 
 // Select all tiles
@@ -109,6 +115,7 @@ colorOptionButtons.forEach(button => {
     })
 })
 
+// Function to generate random RGBA
 function random_rgba() {
     var o = Math.round, r = Math.random, s = 230; // Max RGB value set to 230 to prevent white
     var red = o(r() * s);
@@ -154,12 +161,11 @@ gridLinesButton.addEventListener('click', (e) => {
     } else {
         gridTileWrappers.forEach((div => div.style.border = "1px solid black"));
         showGridLines = true;
-    }
+    };
+
+    gridLinesButton.textContent = 
+        showGridLines
+        ? "Disable"
+        : "Enable"
     
 });
-
-
-
-
-
-
